@@ -17,12 +17,10 @@ class User(SQLModel,table=True):
     email:str
     first_name:str
     last_name:str
-    id_verified:bool = False
-    created_at : datetime = Field(Column(pg.TIMESTAMP, default=datetime.now))
-    updated_at: datetime = Field(Column(pg.TIMESTAMP,default= datetime.now))
-
-
-
+    id_verified:bool = Field(default=False)
+    password_hash: str = Field(exclude=True)
+    created_at: datetime = Field(sa_column=Column(pg.TIMESTAMP, default=datetime.now))
+    updated_at: datetime = Field(sa_column=Column(pg.TIMESTAMP, default=datetime.now))
 
     def __repr__(self):
         return f"<User {self.username}>"
