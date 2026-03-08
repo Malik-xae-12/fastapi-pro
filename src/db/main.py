@@ -29,6 +29,7 @@ async def init_db():
         # result = await conn.execute(statement)
         # print(result.all())
         from src.books.models import Book
+        from src.auth.models import User
         await conn.run_sync(SQLModel.metadata.create_all)
 
 
