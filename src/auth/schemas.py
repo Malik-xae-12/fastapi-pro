@@ -16,3 +16,7 @@ class UserModel(BaseModel):
     last_name: str
     id_verified: bool  
 
+
+class UserLoginModel(BaseModel):
+    email:str
+    password :str
