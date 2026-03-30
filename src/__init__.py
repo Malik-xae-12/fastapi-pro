@@ -6,6 +6,8 @@ from src.db.main import init_db
 from src.auth.routers import auth_router
 from sqladmin import Admin, ModelView
 from src.admin import setup_admin
+from fastapi.middleware.cors import CORSMiddleware
+
 
 @asynccontextmanager
 async def life_span(app:FastAPI):
@@ -22,6 +24,14 @@ app = FastAPI(
     description="An API for managing books",
     version=version,
     lifespan=life_span
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 setup_admin(app)

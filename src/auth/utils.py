@@ -30,12 +30,15 @@ def create_access_token(
     payload["exp"] = datetime.now() + (
         expiry if expiry is not None else timedelta(seconds=ACCESS_TOKEN_EXPIRY)
     )
+    print("===============================")
+    print(payload["exp"])
+    print("===============================")
     payload["jti"] = str(uuid.uuid4())
 
     payload["refresh"] = refresh
 
-    token = jwt.encode(
-        payload=payload, key=Config.JWT_SECRET, algorithm=Config.JWT_ALGORITHM
+    token = pyjwt.encode(
+        payload=payload, key=config.JWT_SECRET, algorithm=config.JWT_ALGORITHM
     )
 
     return token
