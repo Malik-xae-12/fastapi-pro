@@ -23,7 +23,6 @@ app = FastAPI(
     title="Book API",
     description="An API for managing books",
     version=version,
-    lifespan=life_span
 )
 
 app.add_middleware(

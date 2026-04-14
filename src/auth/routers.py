@@ -7,12 +7,13 @@ from fastapi.exceptions import HTTPException
 from .utils import verify_password,create_access_token
 from datetime import timedelta,datetime
 from fastapi.responses import JSONResponse
-from .dependencies import RefreshTokenBearer,AccessTokenBearer
+from .dependencies import RefreshTokenBearer,AccessTokenBearer,get_current_user,RoleChecker
 from src.db.redis import add_jti_to_blocklist
+
 
 auth_router = APIRouter()
 user_service = UserService()
-
+role_checker = RoleChecker(["admin","user"])
 
 REFRESH_TOKEN_EXPIRY = 2
 
@@ -41,8 +42,9 @@ async def login_users(login_data:UserLoginModel,session:AsyncSession=Depends(get
         if password_valid:
             access_token = create_access_token(
                 user_data={
-                    'email':email,
-                    'user_uid':str(user.uid)
+                    'email':user.email,
+                    'user_uid':str(user.uid),
+                    "role" : user.role
                 },
                 expiry=None
             )
@@ -88,6 +90,11 @@ async def get_new_access_token(token_details:dict = Depends(RefreshTokenBearer()
             "access_token":new_access_token
         })
     raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail="Invalid or Expired token")
+
+
+@auth_router.get('/me',response_model=UserModel)
+async def get_current_user(user= Depends(get_current_user), _:bool=Depends(role_checker)):
+    return user
 
 
 @auth_router.get('/logout')

@@ -9,7 +9,8 @@ class Book(BaseModel):
     publisher: str
     published_date: date
     page_count: int
-    language: str              
+    language: str 
+    user_uid:uuid.UUID             
     created_at: datetime
     updated_at: datetime      
 

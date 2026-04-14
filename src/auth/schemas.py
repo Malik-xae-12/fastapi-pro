@@ -1,4 +1,9 @@
 from pydantic import BaseModel,Field
+from datetime import datetime
+import uuid
+from typing import Optional,List
+from src.books.schemas import Book
+
 
 
 class UserCreateModel(BaseModel):
@@ -15,6 +20,10 @@ class UserModel(BaseModel):
     first_name: str
     last_name: str
     id_verified: bool  
+    created_at: datetime
+    updated_at: datetime
+    uid: uuid.UUID
+    books: List[Book]
 
 
 class UserLoginModel(BaseModel):
