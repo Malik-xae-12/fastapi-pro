@@ -23,6 +23,9 @@ class UserModel(BaseModel):
     created_at: datetime
     updated_at: datetime
     uid: uuid.UUID
+
+
+class UserBooksModel(UserModel):
     books: List[Book]
 
 
